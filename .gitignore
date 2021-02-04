@@ -1,0 +1,14 @@
+# PyInstaller
+*.manifest
+*.spec
+
+#
+*.cache
+*.log
+
+# Vagrant & Ruby
+.vagrant/
+.ruby-version
+
+#vim
+*.swp
