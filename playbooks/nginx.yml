@@ -1,0 +1,20 @@
+---
+- hosts: all
+  gather_facts: no
+  vars:
+    svc_portA: 8080
+    svc_portB: 8081
+  become: true
+  tasks:
+    - name: "Deploy LoadBalancer container"
+      docker_container: 
+        name: nginx
+        image: nginx:latest
+        state: started
+        restart: yes
+        #network_mode: host
+        ports: 
+          - "{{svc_portA}}:8080"
+          - "{{svc_portB}}:8081"
+        volumes:
+          - "/vagrant/files/sites.conf:/etc/nginx/conf.d/sites.conf"

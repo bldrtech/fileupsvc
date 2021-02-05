@@ -1,0 +1,18 @@
+---
+- hosts: groupA
+  gather_facts: no
+  vars:
+    svc_port: 7070
+  become: true
+  tasks:
+    - name: get-service-ip-assignment
+      shell: '((grep PRIVATE_IP /etc/environment) || (echo "IP=0.0.0.0")) |cut -f 2 -d "="'
+      register: svc_ip 
+    - name: "Deploy serviceA container"
+      docker_container: 
+        name: fileupsvcA
+        image: "{{svc_image}}:{{svc_tag_A}}"
+        state: started
+        restart: yes
+        ports: 
+          - "{{svc_ip.stdout}}:{{svc_port}}:80"

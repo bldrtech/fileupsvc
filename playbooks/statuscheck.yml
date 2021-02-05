@@ -1,0 +1,10 @@
+---
+- hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: "List running containers"
+      shell: "docker ps |grep -v NAME |awk '{print $2, $(NF-1), $NF}'"
+      register: ps_out
+    - debug: 
+        var: ps_out.stdout_lines
